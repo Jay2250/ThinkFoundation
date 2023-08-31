@@ -1,0 +1,396 @@
+{% extends 'layouts/base_sections.html' %}
+{% load static %}
+
+{% block title %} Home {% endblock title %}
+
+{% block body %} class="index-page bg-gray-200" {% endblock body %}
+
+{% block content %}
+
+            <style>
+              *{
+              margin: 0;
+              pading: 0;
+              box-sizing: border-box;
+                }
+                body{
+                  background-color: rgb(63,72,83);
+                  font-family: sans-serif;
+                  color: rgb(220,220,220);
+                  padding: 50px;
+                  width: 100%%;
+                  overflow-x: hidden;
+                }
+                h1{
+                  font-weight: 400;
+                }
+                a{
+                  color: inherit;
+                }
+                p{
+                  margin-top: .7em;
+                }
+                .warning{
+                  color: rgb(62,148,236);
+                }
+                .st_viewport{
+                  max-height: 500px;
+                  overflow: auto;
+                }
+            
+                [data-table_id="1"]{
+                  background-color: rgb(255,115,0);
+                }
+            
+            
+                ._rank{
+                  min-width: 200px;
+                }
+                ._parent{
+                  min-width: 200px;
+                }
+                ._id{
+                  min-width: 200px;
+                }
+                ._name{
+                  min-width: 200px;
+                }
+                ._surname{
+                  min-width: 200px;
+                }
+                ._year{
+                  min-width: 200px;
+                }
+                ._section{
+                  min-width: 200px;
+                }
+            
+                pre{
+                  overflow: auto;
+                }
+            
+                /** Sticky table styles **/
+                .st_viewport{
+                  background-color: rgb(62,148,236);
+                  color: rgb(27,30,36);
+                  margin: 20px 0;
+                }
+                /*   Table wrap */
+                .st_wrap_table{
+            
+                }
+                /*    header */
+                .st_table_header{
+                  position: -webkit-sticky;
+                  position: sticky;
+                  top: 0px;
+                  z-index: 1;
+                  background-color: rgb(27,30,36);
+                  color: rgb(220,220,220);
+                }
+                .st_table_header h2{
+                  font-weight: 400;
+                  margin: 0 20px;
+                  padding: 20px 0 0;
+                }
+                .st_table_header .st_row{
+                  color: rgba(220,220,220, .7);
+                }
+                .st_table_header .st_column{
+            
+                }
+                /*   table */
+                .st_table{
+                  display: -webkit-box;
+                  display: -webkit-flex;
+                  display: -ms-flexbox;
+                  display: flex;
+                  -webkit-box-orient: vertical;
+                  -webkit-box-direction: normal;
+                  -webkit-flex-direction: column;
+                      -ms-flex-direction: column;
+                          flex-direction: column;
+                }
+                /*    row */
+                .st_row{
+                  display: -webkit-box;
+                  display: -webkit-flex;
+                  display: -ms-flexbox;
+                  display: flex;
+                  margin: 0;
+                }
+                .st_table .st_row:nth-child(even){
+                  background-color: rgba(0,0,0, .1)
+                }
+                /*    column */
+                .st_column{
+                  padding: 10px 20px;
+                }
+            </style>
+
+
+<header class="header-2">
+  <div class="page-header min-vh-75 relative" style="background-image: url('{% static 'img/curved-images/curved.jpg' %}')">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 text-center mx-auto">
+          <h1 class="text-white pt-3 mt-n5">
+            Welcome {% if user.is_authenticated %}, {{user.first_name}}{% endif %}
+          </h1>
+          <p>
+              {% if user.is_superuser %}
+                <a href="{% url 'admin:index' %}" class='btn btn-secondary p-2'>   Check Users   </a>
+              {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="position-absolute w-100 z-index-1 bottom-0">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 40" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="moving-waves">
+          <use xlink:href="gentle-wave" x="48" y="-1" fill="rgba(255,255,255,0.40" />
+          <use xlink:href="gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.35)" />
+          <use xlink:href="gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.25)" />
+          <use xlink:href="gentle-wave" x="48" y="8" fill="rgba(255,255,255,0.20)" />
+          <use xlink:href="gentle-wave" x="48" y="13" fill="rgba(255,255,255,0.15)" />
+          <use xlink:href="gentle-wave" x="48" y="16" fill="rgba(255,255,255,0.95" />
+        </g>
+      </svg>
+    </div>
+  </div>
+</header>
+{% if user.is_authenticated %}
+
+
+
+<section class="pt-3 pb-4" id="count-stats">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9 z-index-2 border-radius-xl mt-n10 mx-auto py-3 blur shadow-blur">
+        <div class="row" style="color: gray; opacity: 0.7">
+          <div class="col-md-4 position-relative">
+            <div class="p-3 text-center">
+              <h1 class="text-gradient text-primary"><span id="state1" countTo="{{data.distinct.count}}">0</span>+</h1>
+              <h5 class="mt-3">Polling Booth Name</h5>
+              <p class="text-sm">
+                {% for name in data %}
+                  <p>
+                    {% if name.id > 250 %}
+                      {% if user.last_name == '1' or user.last_name == '2' or user.is_superuser %}
+                        <a href="{% url 'record' name.id %}" style=":hover{opacity: 1;font-size: xx-large;}">{{name.polling_booth_name}}</a>
+                        {% else %}
+                        {{name.polling_booth_name}}
+                      {% endif %}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </p>
+            </div>
+            <hr class="vertical dark">
+          </div>
+          <div class="col-md-4 position-relative">
+            <div class="p-3 text-center">
+              <h1 class="text-gradient text-primary"> <span id="state2" countTo="{{data.count}}">0</span>+</h1>
+              <h5 class="mt-3">Parent Constituency</h5>
+              <p class="text-sm">
+                {% for name in data %}
+                  <p>
+                    {% if name.id > 250 %}
+                      {{name.parent_constituency}}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </p>
+            </div>
+            <hr class="vertical dark">
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 text-center">
+              <h1 class="text-gradient text-primary"><span id="state3" countTo="{{data.count}}">0</span>+</h1>
+              <h5 class="mt-3">Winner - 2019</h5>
+              <p class="text-sm">
+                {% for name in data %}
+                  <p>
+                    {% if name.id > 250 %}
+                      {{name.winner2019}}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% if user.last_name == '1' or user.last_name == '2' or user.is_superuser %}
+
+<!-- -------- START Content Presentation Docs ------- -->
+
+<div class="container mt-sm-5">
+    <div class="page-header min-vh-50 my-sm-3 mb-3 border-radius-xl" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/flower.jpg');">
+      <span class="mask bg-gradient-dark"></span>
+      <div class="container">
+        <div class="row">
+            <h4 class="text-white mb-0">{% if user.is_superuser %} Complete {% else %} {{pc}} {% endif %} Polling Data </h4>
+            <h1 class="text-white"> Previous Election Data </h1>
+
+        <main class="st_viewport">
+          <div class="st_wrap_table " data-table_id="0">
+            <header class="st_table_header">
+              <h2>Polling Booth Analysis</h2>
+              <div class="st_row">
+                <div class="st_column _rank">Polling Booth Name</div>
+                <div class="st_column _parent">Parent Constituency</div>
+                <div class="st_column _name">Winner 2014</div>
+                <div class="st_column _surname">Winner 2019</div>
+                <div class="st_column _year">BJP - Votes</div>
+                <div class="st_column _section">Total Voters 2019</div>
+              </div>
+            </header>
+            <div class="st_table">
+              {% for name in data %}
+              <div class="st_row">
+                {% if user.last_name == '1' and pc == name.parent_constituency  or user.last_name == '2' or user.is_superuser %}
+                <div class="st_column _rank text-align-center"><a href="{% url 'record' name.id %}">{{name.polling_booth_name}}</a></div>
+                <div class="st_column _parent text-align-center"> {{name.parent_constituency}} </div>
+                <div class="st_column _name text-align-center">   {{name.winner2014}}          </div>
+                <div class="st_column _surname text-align-center">{{name.winner2019}}          </div>
+                <div class="st_column _year text-align-center">   {{name.bjp2_votes}}          </div>
+                <div class="st_column _section text-align-center">{{name.total2_voters}}       </div>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+  
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endif %}
+<!-- -------- END Content Presentation Docs ------- -->
+{% else %}
+
+
+<section class="pt-3 pb-4" id="count-stats">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9 z-index-2 border-radius-xl mt-n10 mx-auto py-3 blur shadow-blur">
+        <div class="row">
+          <div class="card card-plain border-radius-xl">
+            <div class="card-header pb-0 text-left">
+              <h4 class="font-weight-bolder">Sign In</h4>
+              <p class="mb-0">Enter your Username and Password to sign in</p>
+            <div class="card-body">
+              <form method="post" action="" role="form">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <input type="text" class="form-control" name="username" placeholder="Username" required/>
+                </div>
+              
+                <div class="mb-3">
+                  <input type="password" class="form-control" name="password" placeholder="Password" required/>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer text-center pt-0 px-lg-2 px-1">
+              <p class="mb-4 text-sm mx-auto">
+                Don't have an account?
+                <a href="{% url 'register' %}" class="text-primary text-gradient font-weight-bold">Sign up</a>
+              </p>
+            </div>
+          </div>
+          
+          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+{% endif %}
+
+
+<!-- -------   START PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
+<div class="pt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5 ms-auto">
+        <h4 class="mb-1">Thank you for your support!</h4>
+        <p class="lead mb-0">We deliver the best web products</p>
+      </div>
+      <div class="col-lg-5 me-lg-auto my-lg-auto text-lg-end mt-5">
+        <a href="" class="btn btn-info mb-0 me-2" target="_blank">
+          <i class="fab fa-twitter me-1"></i> Tweet
+        </a>
+        <a href="" class="btn btn-primary mb-0 me-2" target="_blank">
+          <i class="fab fa-facebook-square me-1"></i> Share
+        </a>
+        <a href="" class="btn btn-dark mb-0 me-2" target="_blank">
+          <i class="fab fa-pinterest me-1"></i> Pin it
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+
+<script type="text/javascript">
+
+  if (document.getElementById('state1')) {
+    const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));
+    if (!countUp.error) {
+      countUp.start();
+    } else {
+      console.error(countUp.error);
+    }
+  }
+  if (document.getElementById('state2')) {
+    const countUp1 = new CountUp('state2', document.getElementById("state2").getAttribute("countTo"));
+    if (!countUp1.error) {
+      countUp1.start();
+    } else {
+      console.error(countUp1.error);
+    }
+  }
+  if (document.getElementById('state3')) {
+    const countUp2 = new CountUp('state3', document.getElementById("state3").getAttribute("countTo"));
+    if (!countUp2.error) {
+      countUp2.start();
+    } else {
+      console.error(countUp2.error);
+    };
+  }
+</script>
+
+{% endblock javascripts %}
