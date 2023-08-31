@@ -1,8 +1,10 @@
 asgiref==3.7.2
+config==0.5.1
 defusedxml==0.7.1
 diff-match-patch==20230430
 dj-database-url==2.1.0
 Django==4.2.4
+django-config==0.1.4
 django-heroku==0.3.1
 django-import-export==3.2.0
 django-rest-framework==0.1.0
