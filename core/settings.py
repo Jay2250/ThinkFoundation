@@ -1,13 +1,14 @@
 
 import os, random, string
 from pathlib import Path
+import sys
 from dotenv import load_dotenv
 
 load_dotenv()  # take environment variables from .env.
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+sys.path.append(str(BASE_DIR / 'config'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
